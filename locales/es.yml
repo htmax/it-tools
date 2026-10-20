@@ -69,3 +69,24 @@ tools:
     measurement: Measurement
     text: Text
     data: Data
+  json-prettify:
+    title: Formateador JSON
+    description: Embellece y formatea cadenas JSON.
+
+    sortKeys: 'Ordenar claves'
+    indentSize: 'Sangría'
+    rawJson: 'Tu JSON sin formato'
+    rawJsonPlaceholder: 'Pega tu JSON sin formato aquí...'
+    prettified: 'Versión formateada de tu JSON'
+    invalidJson: 'El JSON proporcionado no es válido.'
+    invalidUnescape: 'El contenido no es una cadena JSON escapada'
+    button:
+      format: 'Formatear'
+      minify: 'Minificar'
+      escape: 'Escapar'
+      unescape: 'Desescapar'
+      toXml: 'A XML'
+      sort: 'Ordenar claves'
+      clear: 'Limpiar'
+      fullscreen: 'Pantalla completa'
+      exitFullscreen: 'Salir de pantalla completa'

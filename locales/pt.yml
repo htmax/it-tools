@@ -69,3 +69,24 @@ tools:
     measurement: 'Medidas'
     text: 'Texto'
     data: 'Dados'
+  json-prettify:
+    title: Formatador JSON
+    description: Embeleze e formate strings JSON.
+
+    sortKeys: 'Ordenar chaves'
+    indentSize: 'Indentação'
+    rawJson: 'Seu JSON bruto'
+    rawJsonPlaceholder: 'Cole seu JSON bruto aqui...'
+    prettified: 'Versão formatada do seu JSON'
+    invalidJson: 'O JSON fornecido não é válido.'
+    invalidUnescape: 'O conteúdo não é uma string JSON escapada'
+    button:
+      format: 'Formatar'
+      minify: 'Minificar'
+      escape: 'Escapar'
+      unescape: 'Desescapar'
+      toXml: 'Para XML'
+      sort: 'Ordenar chaves'
+      clear: 'Limpar'
+      fullscreen: 'Tela cheia'
+      exitFullscreen: 'Sair da tela cheia'

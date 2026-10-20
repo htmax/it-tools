@@ -272,6 +272,23 @@ tools:
   json-prettify:
     title: JSON verschönern und formatieren
     description: Verschönere deinen JSON-String in ein menschenlesbares Format.
+    sortKeys: 'Schlüssel sortieren'
+    indentSize: 'Einrückung'
+    rawJson: 'Dein rohes JSON'
+    rawJsonPlaceholder: 'Rohes JSON hier einfügen...'
+    prettified: 'Formatiertes JSON'
+    invalidJson: 'Das eingegebene JSON ist ungültig.'
+    invalidUnescape: 'Der Inhalt ist kein escapter JSON-String'
+    button:
+      format: 'Formatieren'
+      minify: 'Komprimieren'
+      escape: 'Escapen'
+      unescape: 'Unescapen'
+      toXml: 'Zu XML'
+      sort: 'Schlüssel sortieren'
+      clear: 'Leeren'
+      fullscreen: 'Vollbild'
+      exitFullscreen: 'Vollbild beenden'
   docker-run-to-docker-compose-converter:
     title: Docker run zu Docker compose Konverter
     description: Wandle docker run-Befehle in docker-compose-Dateien um!

@@ -4,6 +4,7 @@ import HomePage from './pages/Home.page.vue';
 import NotFound from './pages/404.page.vue';
 import { tools } from './tools';
 import { config } from './config';
+import { dedicatedToolPath } from './dedicated-host';
 import { routes as demoRoutes } from './ui/demo/demo.routes';
 
 const toolsRoutes = tools.map(({ path, name, component, ...config }) => ({
@@ -37,5 +38,9 @@ const router = createRouter({
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ],
 });
+
+// 专用入口域名（如 json.htmax.cn）根路径直接进对应工具页。
+// 用路由守卫而不是 replace()，否则在 app.use(router) 之前调用会被初始导航覆盖。
+router.beforeEach(to => (dedicatedToolPath && to.path === '/' ? dedicatedToolPath : true));
 
 export default router;

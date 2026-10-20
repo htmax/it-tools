@@ -6,6 +6,7 @@ import type { HeadObject } from '@vueuse/head';
 import BaseLayout from './base.layout.vue';
 import FavoriteButton from '@/components/FavoriteButton.vue';
 import type { Tool } from '@/tools/tools.types';
+import { isDedicatedHost } from '@/dedicated-host';
 
 const route = useRoute();
 
@@ -39,8 +40,9 @@ const toolDescription = computed<string>(() => t(`tools.${i18nKey.value}.descrip
             {{ toolTitle }}
           </n-h1>
 
-          <div>
-            <FavoriteButton :tool="{ name: route.meta.name } as Tool" />
+          <div v-if="!isDedicatedHost">
+            <!-- 尾斜杠 URL 要去掉，否则存进 localStorage 的 path 和工具的 path 对不上，收藏不会出现在侧栏 -->
+            <FavoriteButton :tool="{ name: route.meta.name, path: route.path.replace(/\/+$/, '') } as Tool" />
           </div>
         </div>
 

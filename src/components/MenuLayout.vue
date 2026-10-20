@@ -3,6 +3,7 @@ import { useStyleStore } from '@/stores/style.store';
 
 const styleStore = useStyleStore();
 const { isMenuCollapsed, isSmallScreen } = toRefs(styleStore);
+const props = defineProps<{ hideSider?: boolean }>();
 const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static'));
 </script>
 
@@ -12,8 +13,9 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
       bordered
       collapse-mode="width"
       :collapsed-width="0"
-      :width="240"
-      :collapsed="isMenuCollapsed"
+      :width="props.hideSider ? 0 : 240"
+      :collapsed="props.hideSider || isMenuCollapsed"
+      :bordered="!props.hideSider"
       :show-trigger="false"
       :native-scrollbar="false"
       :position="siderPosition"

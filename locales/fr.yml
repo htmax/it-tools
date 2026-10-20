@@ -79,3 +79,24 @@ tools:
     copied: Le token a été copié
     length: Longueur
     tokenPlaceholder: Le token...
+  json-prettify:
+    title: Formateur JSON
+    description: Embellissez et formatez vos chaînes JSON.
+
+    sortKeys: 'Trier les clés'
+    indentSize: 'Indentation'
+    rawJson: 'Votre JSON brut'
+    rawJsonPlaceholder: 'Collez votre JSON brut ici...'
+    prettified: 'Version formatée de votre JSON'
+    invalidJson: 'Le JSON fourni n''est pas valide.'
+    invalidUnescape: 'Le contenu n''est pas une chaîne JSON échappée'
+    button:
+      format: 'Formater'
+      minify: 'Compresser'
+      escape: 'Échapper'
+      unescape: 'Déséchapher'
+      toXml: 'Vers XML'
+      sort: 'Trier les clés'
+      clear: 'Effacer'
+      fullscreen: 'Plein écran'
+      exitFullscreen: 'Quitter le plein écran'

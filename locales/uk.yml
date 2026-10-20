@@ -69,3 +69,24 @@ tools:
     measurement: Вимірювання
     text: Текст
     data: Дані
+  json-prettify:
+    title: Форматувальник JSON
+    description: Форматування JSON-рядків.
+
+    sortKeys: 'Сортувати ключі'
+    indentSize: 'Відступ'
+    rawJson: 'Ваш неформатований JSON'
+    rawJsonPlaceholder: 'Вставте неформатований JSON тут...'
+    prettified: 'Відформатована версія вашого JSON'
+    invalidJson: 'Наданий JSON недійсний.'
+    invalidUnescape: 'Вміст не є екранованим JSON-рядком'
+    button:
+      format: 'Форматувати'
+      minify: 'Стиснути'
+      escape: 'Екранувати'
+      unescape: 'Розекранувати'
+      toXml: 'У XML'
+      sort: 'Сортувати ключі'
+      clear: 'Очистити'
+      fullscreen: 'Повний екран'
+      exitFullscreen: 'Вийти з повного екрана'

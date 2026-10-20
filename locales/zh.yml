@@ -225,6 +225,24 @@ tools:
     title: JSON美化和格式化
     description: 将JSON字符串修饰为友好的可读格式。
 
+    sortKeys: '排序键名'
+    indentSize: '缩进空格'
+    rawJson: '原始 JSON'
+    rawJsonPlaceholder: '在此粘贴原始 JSON...'
+    prettified: '格式化后的 JSON'
+    invalidJson: '输入的 JSON 不合法。'
+    invalidUnescape: '内容不是转义后的 JSON 字符串'
+    button:
+      format: '格式化'
+      minify: '压缩'
+      escape: '转义'
+      unescape: '反转义'
+      toXml: '转 XML'
+      sort: '排序'
+      clear: '清空'
+      fullscreen: '全屏'
+      exitFullscreen: '退出全屏'
+
   docker-run-to-docker-compose-converter:
     title: Docker Run 到 docker-compose 转换器
     description: 将 docker run 命令行转换为 docker-compose 文件!

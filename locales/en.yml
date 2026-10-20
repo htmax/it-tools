@@ -227,6 +227,23 @@ tools:
   json-prettify:
     title: JSON prettify and format
     description: Prettify your JSON string into a friendly, human-readable format.
+    sortKeys: 'Sort keys'
+    indentSize: 'Indent size'
+    rawJson: 'Your raw JSON'
+    rawJsonPlaceholder: 'Paste your raw JSON here...'
+    prettified: 'Prettified version of your JSON'
+    invalidJson: 'Provided JSON is not valid.'
+    invalidUnescape: 'Content is not an escaped JSON string'
+    button:
+      format: 'Format'
+      minify: 'Minify'
+      escape: 'Escape'
+      unescape: 'Unescape'
+      toXml: 'To XML'
+      sort: 'Sort keys'
+      clear: 'Clear'
+      fullscreen: 'Fullscreen'
+      exitFullscreen: 'Exit fullscreen'
 
   docker-run-to-docker-compose-converter:
     title: Docker run to Docker compose converter

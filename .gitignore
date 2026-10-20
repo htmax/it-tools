@@ -33,3 +33,5 @@ coverage
 /playwright/.cache/
 # Webkit with playwright creates a salt file
 salt
+# pnpm 本地缓存（681M，不入库）
+.pnpm-store/
