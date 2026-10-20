@@ -45,7 +45,11 @@ export const useToolStore = defineStore('tools', () => {
     newTools: computed(() => tools.value.filter(({ isNew }) => isNew)),
 
     addToolToFavorites({ tool }: { tool: MaybeRef<Tool> }) {
-      favoriteToolsName.value.push(get(tool).path);
+      const toolPath = get(tool).path;
+      // 没 path 的 tool 写进去只会变成一条永远匹配不到的脏数据，跳过
+      if (toolPath) {
+        favoriteToolsName.value.push(toolPath);
+      }
     },
 
     removeToolFromFavorites({ tool }: { tool: MaybeRef<Tool> }) {
