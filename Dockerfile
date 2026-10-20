@@ -5,7 +5,8 @@ ENV NPM_CONFIG_LOGLEVEL warn
 ENV CI true
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm@8 && pnpm i --frozen-lockfile
+# 固定 pnpm 大版本：pnpm 10 对锁文件和构建脚本行为有变，会直接失败
+RUN npm install -g pnpm@9 && pnpm i --frozen-lockfile
 COPY . .
 RUN pnpm build
 
