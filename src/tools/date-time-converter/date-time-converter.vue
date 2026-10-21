@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  format,
   formatISO,
   formatISO9075,
   formatRFC3339,
@@ -99,6 +100,71 @@ const formats: DateFormat[] = [
 const formatIndex = ref(6);
 const now = useNow();
 
+const { t } = useI18n();
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+const {
+  timestamp: currentTimestamp,
+  pause: pauseClock,
+  resume: resumeClock,
+  isActive: isClockActive,
+} = useTimestamp({ controls: true, interval: 1000 });
+
+const currentSeconds = computed(() => Math.floor(currentTimestamp.value / 1000));
+const currentLocalTime = computed(() => format(currentTimestamp.value, 'yyyy-MM-dd HH:mm:ss'));
+
+function toggleClock() {
+  if (isClockActive.value) {
+    pauseClock();
+  }
+  else {
+    resumeClock();
+  }
+}
+
+function refreshClock() {
+  currentTimestamp.value = Date.now();
+}
+
+const timestampInput = ref(String(getUnixTime(new Date())));
+const timestampUnit = ref<'s' | 'ms'>('s');
+const unitOptions = computed(() => [
+  { label: t('tools.date-converter.seconds', 'Seconds'), value: 's' },
+  { label: t('tools.date-converter.milliseconds', 'Milliseconds'), value: 'ms' },
+]);
+
+const timestampDate = computed(() => {
+  const raw = timestampInput.value.trim();
+  if (!/^-?\d+$/.test(raw)) {
+    return undefined;
+  }
+
+  const date = timestampUnit.value === 's' ? fromUnixTime(Number(raw)) : new Date(Number(raw));
+  return isValid(date) ? date : undefined;
+});
+
+const timestampValidation = useValidation({
+  source: timestampInput,
+  watch: [timestampUnit],
+  rules: computed(() => [
+    {
+      message: t('tools.date-converter.invalid-timestamp', 'Please enter a valid Unix timestamp'),
+      validator: (value: string) => value.trim() === '' || timestampDate.value !== undefined,
+    },
+  ]),
+});
+
+const timestampLocalResult = computed(() => (timestampDate.value ? format(timestampDate.value, 'yyyy-MM-dd HH:mm:ss') : ''));
+const timestampUtcResult = computed(() => (timestampDate.value ? timestampDate.value.toISOString().slice(0, 19).replace('T', ' ') : ''));
+
+const selectedDateTime = ref<number | null>(Date.now());
+const selectedUnixSeconds = computed(() => (selectedDateTime.value === null ? '' : String(Math.floor(selectedDateTime.value / 1000))));
+const selectedUnixMilliseconds = computed(() => (selectedDateTime.value === null ? '' : String(selectedDateTime.value)));
+
+function selectCurrentDateTime() {
+  selectedDateTime.value = Date.now();
+}
+
 const normalizedDate = computed(() => {
   if (!inputDate.value) {
     return now.value;
@@ -126,7 +192,7 @@ const validation = useValidation({
   watch: [formatIndex],
   rules: [
     {
-      message: 'This date is invalid for this format',
+      message: t('tools.date-converter.invalid-date-for-format', 'This date is invalid for this format'),
       validator: value =>
         withDefaultOnError(() => {
           if (value === '') {
@@ -151,11 +217,109 @@ function formatDateUsingFormatter(formatter: (date: Date) => string, date?: Date
 
 <template>
   <div>
+    <c-card>
+      <div flex flex-wrap items-center gap-x-2 gap-y-3>
+        <span text-sm op-60>{{ t('tools.date-converter.current-timestamp', 'Current Unix timestamp') }}</span>
+        <span data-test-id="current-unix-timestamp" text-2xl font-semibold leading-none font-mono tabular-nums>{{ currentSeconds }}</span>
+        <div ml-auto flex gap-2>
+          <c-button size="small" @click="toggleClock">
+            {{ isClockActive ? t('tools.date-converter.pause', 'Pause') : t('tools.date-converter.resume', 'Resume') }}
+          </c-button>
+          <c-button size="small" @click="refreshClock">
+            {{ t('tools.date-converter.refresh', 'Refresh') }}
+          </c-button>
+        </div>
+      </div>
+      <div mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs op-60>
+        <span>{{ currentLocalTime }} ({{ timeZone }})</span>
+        <span font-mono>{{ t('tools.date-converter.milliseconds', 'Milliseconds') }}: {{ currentTimestamp }}</span>
+      </div>
+    </c-card>
+
+    <c-card :title="t('tools.date-converter.timestamp-to-date', 'Unix timestamp to date')" mt-4>
+      <div flex gap-2>
+        <c-input-text
+          v-model:value="timestampInput"
+          :placeholder="t('tools.date-converter.timestamp-placeholder', 'e.g. 1792569998')"
+          :validation="timestampValidation"
+          clearable
+          flex-1
+          test-id="timestamp-to-date-input"
+        />
+        <c-select
+          v-model:value="timestampUnit"
+          :options="unitOptions"
+          style="flex: 0 0 110px"
+          data-test-id="timestamp-unit-select"
+        />
+      </div>
+
+      <div grid grid-cols-1 mt-3 gap-3 sm:grid-cols-2>
+        <input-copyable
+          :label="t('tools.date-converter.local-time', 'Local time')"
+          label-position="top"
+          :value="timestampLocalResult"
+          placeholder="—"
+          test-id="timestamp-local-result"
+          readonly
+        />
+        <input-copyable
+          :label="t('tools.date-converter.utc-time', 'UTC time')"
+          label-position="top"
+          :value="timestampUtcResult"
+          placeholder="—"
+          test-id="timestamp-utc-result"
+          readonly
+        />
+      </div>
+      <div mt-2 text-xs op-60>
+        {{ t('tools.date-converter.local-timezone', 'Local timezone') }}: {{ timeZone }}
+      </div>
+    </c-card>
+
+    <c-card :title="t('tools.date-converter.date-to-timestamp', 'Date to Unix timestamp')" mt-4>
+      <div flex gap-2>
+        <n-date-picker
+          v-model:value="selectedDateTime"
+          type="datetime"
+          clearable
+          :placeholder="t('tools.date-converter.date-time-placeholder', 'Pick a date and time')"
+          style="flex: 1; min-width: 0"
+        />
+        <c-button @click="selectCurrentDateTime">
+          {{ t('tools.date-converter.now', 'Now') }}
+        </c-button>
+      </div>
+
+      <div grid grid-cols-1 mt-3 gap-3 sm:grid-cols-2>
+        <input-copyable
+          :label="t('tools.date-converter.unix-seconds', 'Unix timestamp (seconds)')"
+          label-position="top"
+          :value="selectedUnixSeconds"
+          placeholder="—"
+          test-id="date-to-timestamp-seconds"
+          readonly
+        />
+        <input-copyable
+          :label="t('tools.date-converter.unix-milliseconds', 'Unix timestamp (milliseconds)')"
+          label-position="top"
+          :value="selectedUnixMilliseconds"
+          placeholder="—"
+          test-id="date-to-timestamp-milliseconds"
+          readonly
+        />
+      </div>
+      <div mt-2 text-xs op-60>
+        {{ t('tools.date-converter.local-timezone', 'Local timezone') }}: {{ timeZone }}
+      </div>
+    </c-card>
+
+    <n-divider>{{ t('tools.date-converter.more-formats', 'More formats') }}</n-divider>
+
     <div flex gap-2>
       <c-input-text
         v-model:value="inputDate"
-        autofocus
-        placeholder="Put your date string here..."
+        :placeholder="t('tools.date-converter.input-placeholder', 'Put your date string here...')"
         clearable
         test-id="date-time-converter-input"
         :validation="validation"
@@ -170,8 +334,6 @@ function formatDateUsingFormatter(formatter: (date: Date) => string, date?: Date
       />
     </div>
 
-    <n-divider />
-
     <input-copyable
       v-for="{ name, fromDate } in formats"
       :key="name"
@@ -180,7 +342,7 @@ function formatDateUsingFormatter(formatter: (date: Date) => string, date?: Date
       label-position="left"
       label-align="right"
       :value="formatDateUsingFormatter(fromDate, normalizedDate)"
-      placeholder="Invalid date..."
+      :placeholder="t('tools.date-converter.invalid-date', 'Invalid date...')"
       :test-id="name"
       readonly
       mt-2

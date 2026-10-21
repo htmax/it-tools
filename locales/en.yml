@@ -313,6 +313,27 @@ tools:
   date-converter:
     title: Date-time converter
     description: Convert date and time into the various different formats
+    current-timestamp: Current Unix timestamp
+    pause: Pause
+    resume: Resume
+    refresh: Refresh
+    timestamp-to-date: Unix timestamp to date
+    date-to-timestamp: Date to Unix timestamp
+    timestamp-placeholder: e.g. 1792569998
+    seconds: Seconds
+    milliseconds: Milliseconds
+    invalid-timestamp: Please enter a valid Unix timestamp
+    local-time: Local time
+    utc-time: UTC time
+    local-timezone: Local timezone
+    date-time-placeholder: Pick a date and time
+    now: Now
+    unix-seconds: Unix timestamp (seconds)
+    unix-milliseconds: Unix timestamp (milliseconds)
+    more-formats: More formats
+    input-placeholder: Put your date string here...
+    invalid-date-for-format: This date is invalid for this format
+    invalid-date: Invalid date...
 
   phone-parser-and-formatter:
     title: Phone parser and formatter

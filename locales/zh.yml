@@ -310,6 +310,27 @@ tools:
   date-converter:
     title: 日期时间转换器
     description: 将日期和时间转换为各种不同的格式
+    current-timestamp: 当前 Unix 时间戳
+    pause: 暂停
+    resume: 继续
+    refresh: 刷新
+    timestamp-to-date: Unix 时间戳 → 日期时间
+    date-to-timestamp: 日期时间 → Unix 时间戳
+    timestamp-placeholder: 例如 1792569998
+    seconds: 秒
+    milliseconds: 毫秒
+    invalid-timestamp: 请输入有效的 Unix 时间戳
+    local-time: 本地时间
+    utc-time: UTC 时间
+    local-timezone: 本地时区
+    date-time-placeholder: 选择日期和时间
+    now: 当前时间
+    unix-seconds: Unix 时间戳（秒）
+    unix-milliseconds: Unix 时间戳（毫秒）
+    more-formats: 更多格式转换
+    input-placeholder: 在此输入日期字符串...
+    invalid-date-for-format: 该日期不符合所选格式
+    invalid-date: 无效日期...
 
   phone-parser-and-formatter:
     title: 电话分析器和格式化程序
