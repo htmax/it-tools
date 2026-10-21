@@ -165,6 +165,23 @@ function selectCurrentDateTime() {
   selectedDateTime.value = Date.now();
 }
 
+const timestampSnippets = [
+  { language: 'JavaScript', code: 'Math.floor(Date.now() / 1000)' },
+  { language: 'Java', code: 'Instant.now().getEpochSecond()' },
+  { language: 'C# / .NET', code: 'DateTimeOffset.UtcNow.ToUnixTimeSeconds()' },
+  { language: 'Python', code: 'int(time.time())' },
+  { language: 'PHP', code: 'time()' },
+  { language: 'Ruby', code: 'Time.now.to_i' },
+  { language: 'Go', code: 'time.Now().Unix()' },
+  { language: 'MySQL', code: 'SELECT UNIX_TIMESTAMP();' },
+  { language: 'PostgreSQL', code: 'SELECT floor(extract(epoch FROM now()));' },
+  { language: 'SQL Server', code: 'SELECT DATEDIFF_BIG(SECOND, \'1970-01-01\', SYSUTCDATETIME());' },
+  { language: 'Linux / macOS', code: 'date +%s' },
+  { language: 'PowerShell', code: '[DateTimeOffset]::UtcNow.ToUnixTimeSeconds()' },
+  { language: 'Perl', code: 'time' },
+  { language: 'VBScript / ASP', code: 'DateDiff("s", "01/01/1970 00:00:00", Now())' },
+];
+
 const normalizedDate = computed(() => {
   if (!inputDate.value) {
     return now.value;
@@ -347,5 +364,25 @@ function formatDateUsingFormatter(formatter: (date: Date) => string, date?: Date
       readonly
       mt-2
     />
+
+    <n-divider>
+      {{ t('tools.date-converter.timestamp-snippets-title', 'How to get the current Unix timestamp in different languages') }}
+    </n-divider>
+
+    <c-card>
+      <div mb-3 text-xs op-60>
+        {{ t('tools.date-converter.timestamp-snippets-hint', 'Examples return seconds since the Unix epoch (imports and boilerplate omitted).') }}
+      </div>
+      <div flex flex-col gap-2>
+        <div
+          v-for="{ language, code } in timestampSnippets"
+          :key="language"
+          flex flex-col gap-0.5 text-sm sm:flex-row sm:items-baseline sm:gap-3
+        >
+          <span shrink-0 op-70 sm:w-110px>{{ language }}</span>
+          <c-text-copyable :value="code" break-all font-mono />
+        </div>
+      </div>
+    </c-card>
   </div>
 </template>
