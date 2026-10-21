@@ -9,7 +9,7 @@ import TextareaCopyable from '@/components/TextareaCopyable.vue';
 type Mode = 'format' | 'minify' | 'escape' | 'unescape' | 'toXml';
 
 const { t } = useI18n();
-const inputElement = ref<HTMLElement>();
+const inputElement = ref<{ inputWrapperRef?: HTMLElement }>();
 
 const rawJson = useStorage('json-prettify:raw-json', '{"hello": "world", "foo": "bar"}');
 const indentSize = useStorage('json-prettify:indent-size', 3);

@@ -10,7 +10,6 @@ const siderPosition = computed(() => (isSmallScreen.value ? 'absolute' : 'static
 <template>
   <n-layout has-sider>
     <n-layout-sider
-      bordered
       collapse-mode="width"
       :collapsed-width="0"
       :width="props.hideSider ? 0 : 240"
