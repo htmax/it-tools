@@ -331,8 +331,13 @@ tools:
     input-placeholder: 在此输入日期字符串...
     invalid-date-for-format: 该日期不符合所选格式
     invalid-date: 无效日期...
+    snippets-title: 多语言代码参考
     timestamp-snippets-title: 如何在不同编程语言中获取当前 Unix 时间戳？
     timestamp-snippets-hint: 以下示例均返回秒级 Unix 时间戳（省略 import 等必要代码）。
+    date-to-timestamp-snippets-title: 如何在不同编程语言中实现普通时间 → Unix 时间戳？
+    date-to-timestamp-snippets-hint: 以下示例将本地时间 2026-10-21 12:00:00 转为秒级时间戳，结果取决于运行环境的时区。
+    copy-code: 复制代码
+    copied: 已复制
 
   phone-parser-and-formatter:
     title: 电话分析器和格式化程序

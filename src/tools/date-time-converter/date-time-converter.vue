@@ -27,8 +27,10 @@ import {
   isUTCDateString,
   isUnixTimestamp,
 } from './date-time-converter.models';
+import DateTimeConverterSnippet from './date-time-converter-snippet.vue';
 import { withDefaultOnError } from '@/utils/defaults';
 import { useValidation } from '@/composable/validation';
+import { useAppTheme } from '@/ui/theme/themes';
 
 const inputDate = ref('');
 
@@ -101,6 +103,7 @@ const formatIndex = ref(6);
 const now = useNow();
 
 const { t } = useI18n();
+const appTheme = useAppTheme();
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const {
@@ -180,6 +183,24 @@ const timestampSnippets = [
   { language: 'PowerShell', code: '[DateTimeOffset]::UtcNow.ToUnixTimeSeconds()' },
   { language: 'Perl', code: 'time' },
   { language: 'VBScript / ASP', code: 'DateDiff("s", "01/01/1970 00:00:00", Now())' },
+];
+
+const dateToTimestampSnippets = [
+  { language: 'JavaScript', code: 'Math.floor(new Date(\'2026-10-21T12:00:00\').getTime() / 1000)' },
+  { language: 'Java', code: 'LocalDateTime.parse("2026-10-21T12:00:00").atZone(ZoneId.systemDefault()).toEpochSecond()' },
+  { language: 'C# / .NET', code: 'DateTimeOffset.Parse("2026-10-21 12:00:00").ToUnixTimeSeconds()' },
+  { language: 'Python', code: 'int(datetime.strptime(\'2026-10-21 12:00:00\', \'%Y-%m-%d %H:%M:%S\').timestamp())' },
+  { language: 'PHP', code: 'strtotime(\'2026-10-21 12:00:00\')' },
+  { language: 'Ruby', code: 'Time.parse(\'2026-10-21 12:00:00\').to_i' },
+  { language: 'Go', code: 't, _ := time.ParseInLocation("2006-01-02 15:04:05", "2026-10-21 12:00:00", time.Local); t.Unix()' },
+  { language: 'MySQL', code: 'SELECT UNIX_TIMESTAMP(\'2026-10-21 12:00:00\');' },
+  { language: 'PostgreSQL', code: 'SELECT extract(epoch FROM timestamp \'2026-10-21 12:00:00\')::bigint;' },
+  { language: 'SQL Server', code: 'SELECT DATEDIFF_BIG(SECOND, \'1970-01-01\', \'2026-10-21 12:00:00\');' },
+  { language: 'Linux', code: 'date -d \'2026-10-21 12:00:00\' +%s' },
+  { language: 'macOS', code: 'date -j -f "%Y-%m-%d %H:%M:%S" "2026-10-21 12:00:00" +%s' },
+  { language: 'PowerShell', code: '[DateTimeOffset]::Parse(\'2026-10-21 12:00:00\').ToUnixTimeSeconds()' },
+  { language: 'Perl', code: 'Time::Piece->strptime(\'2026-10-21 12:00:00\', \'%Y-%m-%d %H:%M:%S\')->epoch' },
+  { language: 'VBScript / ASP', code: 'DateDiff("s", "01/01/1970 00:00:00", "10/21/2026 12:00:00")' },
 ];
 
 const normalizedDate = computed(() => {
@@ -365,24 +386,104 @@ function formatDateUsingFormatter(formatter: (date: Date) => string, date?: Date
       mt-2
     />
 
-    <n-divider>
-      {{ t('tools.date-converter.timestamp-snippets-title', 'How to get the current Unix timestamp in different languages') }}
-    </n-divider>
-
-    <c-card>
-      <div mb-3 text-xs op-60>
+    <c-card mt-4 data-test-id="snippets-card">
+      <div class="snippets-title">
+        {{ t('tools.date-converter.snippets-title', 'Code examples in different languages') }}
+      </div>
+      <div class="snippets-subtitle">
         {{ t('tools.date-converter.timestamp-snippets-hint', 'Examples return seconds since the Unix epoch (imports and boilerplate omitted).') }}
       </div>
-      <div flex flex-col gap-2>
-        <div
-          v-for="{ language, code } in timestampSnippets"
-          :key="language"
-          flex flex-col gap-0.5 text-sm sm:flex-row sm:items-baseline sm:gap-3
-        >
-          <span shrink-0 op-70 sm:w-110px>{{ language }}</span>
-          <c-text-copyable :value="code" break-all font-mono />
+
+      <section class="snippets-section">
+        <h3 class="snippets-section-title">
+          {{ t('tools.date-converter.timestamp-snippets-title', 'How to get the current Unix timestamp in different languages') }}
+        </h3>
+        <div class="snippets-grid">
+          <DateTimeConverterSnippet
+            v-for="{ language, code } in timestampSnippets"
+            :key="language"
+            :language="language"
+            :code="code"
+          />
         </div>
-      </div>
+      </section>
+
+      <section class="snippets-section">
+        <h3 class="snippets-section-title">
+          {{ t('tools.date-converter.date-to-timestamp-snippets-title', 'How to convert a date/time to a Unix timestamp in different languages') }}
+        </h3>
+        <div class="snippets-hint">
+          {{ t('tools.date-converter.date-to-timestamp-snippets-hint', 'Examples convert the local time 2026-10-21 12:00:00. The result depends on the timezone of the environment.') }}
+        </div>
+        <div class="snippets-grid">
+          <DateTimeConverterSnippet
+            v-for="{ language, code } in dateToTimestampSnippets"
+            :key="language"
+            :language="language"
+            :code="code"
+          />
+        </div>
+      </section>
     </c-card>
   </div>
 </template>
+
+<style scoped lang="less">
+.snippets-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.snippets-subtitle {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: v-bind('appTheme.text.mutedColor');
+}
+
+.snippets-section {
+  margin-top: 20px;
+
+  & + & {
+    padding-top: 20px;
+    border-top: 1px dashed v-bind('appTheme.default.colorHover');
+  }
+}
+
+.snippets-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+
+  &::before {
+    content: '';
+    flex: none;
+    width: 3px;
+    height: 14px;
+    border-radius: 2px;
+    background-color: v-bind('appTheme.primary.color');
+  }
+}
+
+.snippets-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: v-bind('appTheme.text.mutedColor');
+}
+
+.snippets-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+</style>

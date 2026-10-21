@@ -334,8 +334,13 @@ tools:
     input-placeholder: Put your date string here...
     invalid-date-for-format: This date is invalid for this format
     invalid-date: Invalid date...
+    snippets-title: Code examples in different languages
     timestamp-snippets-title: How to get the current Unix timestamp in different languages
     timestamp-snippets-hint: Examples return seconds since the Unix epoch (imports and boilerplate omitted).
+    date-to-timestamp-snippets-title: How to convert a date/time to a Unix timestamp in different languages
+    date-to-timestamp-snippets-hint: Examples convert the local time 2026-10-21 12:00:00. The result depends on the timezone of the environment.
+    copy-code: Copy code
+    copied: Copied!
 
   phone-parser-and-formatter:
     title: Phone parser and formatter
