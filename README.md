@@ -4,6 +4,8 @@
     <img src="./.github/logo-dark.png" alt="logo">
 </picture>
 
+> 本仓库为自建 fork，中文说明（自建改动、构建与部署）见 [README.zh-CN.md](./README.zh-CN.md)；线上地址 <https://tools.htmax.cn>。
+
 <p align="center">
 Useful tools for developer and people working in IT. <a href="https://it-tools.tech">Try it!</a>
 </p>
